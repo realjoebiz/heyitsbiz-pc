@@ -1,5 +1,5 @@
-import { Win98Desktop } from '@/components/Win98Desktop';
+import { BizPC } from '@/components/BizPC';
 
 export default function Page() {
-  return <Win98Desktop />;
+  return <BizPC />;
 }

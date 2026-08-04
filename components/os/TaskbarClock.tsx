@@ -20,9 +20,5 @@ export function TaskbarClock() {
     return () => clearInterval(id);
   }, []);
 
-  return (
-    <span className="min-w-[4.5rem] border border-win-dark bg-win-face px-2 py-0.5 text-xs shadow-inset">
-      {time}
-    </span>
-  );
+  return <span className="taskbar-clock">{time}</span>;
 }

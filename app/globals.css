@@ -9,6 +9,518 @@ body {
   overflow: hidden;
 }
 
-body {
+/* ── Desk / monitor scene (you're AT a computer) ── */
+
+.desk-scene {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 100%, #3a2a1a 0%, transparent 55%),
+    linear-gradient(180deg, #1a1410 0%, #0d0a08 45%, #1f1610 100%);
+}
+
+.desk-vignette {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.55) 100%);
+  z-index: 0;
+}
+
+.desk-stage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1rem 2rem;
+}
+
+.monitor-unit {
+  width: min(96vw, 920px);
+  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.65));
+}
+
+.monitor-bezel {
+  border-radius: 14px 14px 8px 8px;
+  border: 3px solid #4a4a4a;
+  background: linear-gradient(180deg, #b8b8b8 0%, #8a8a8a 35%, #6e6e6e 100%);
+  padding: 14px 14px 10px;
+  box-shadow:
+    inset 0 2px 0 #e0e0e0,
+    inset 0 -3px 0 #505050;
+}
+
+.monitor-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #2a2a2a;
+}
+
+.monitor-led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3dff6a;
+  box-shadow: 0 0 8px #3dff6a;
+  animation: led-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes led-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.monitor-screen {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  max-height: min(62vh, 520px);
+  overflow: hidden;
+  border: 3px inset #1a1a1a;
+  border-radius: 4px;
+  background: #000;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+.monitor-scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.06) 2px,
+    rgba(0, 0, 0, 0.06) 4px
+  );
+  pointer-events: none;
+}
+
+.monitor-glass {
+  position: absolute;
+  inset: 0;
+  z-index: 51;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    transparent 35%,
+    transparent 65%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  pointer-events: none;
+}
+
+.monitor-chin {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding: 0 4px;
+  font-size: 9px;
+  color: #3a3a3a;
+}
+
+.monitor-power {
+  color: #2a6a2a;
+}
+
+.monitor-stand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.monitor-neck {
+  width: 72px;
+  height: 28px;
+  background: linear-gradient(90deg, #5a5a5a, #9a9a9a, #5a5a5a);
+  clip-path: polygon(15% 0, 85% 0, 100% 100%, 0 100%);
+}
+
+.monitor-base {
+  width: 160px;
+  height: 12px;
+  margin-top: -2px;
+  border-radius: 0 0 6px 6px;
+  background: linear-gradient(180deg, #7a7a7a, #4a4a4a);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.desk-keyboard {
+  margin-top: 1.25rem;
+  width: min(70vw, 420px);
+  opacity: 0.85;
+}
+
+.desk-keyboard-top {
+  height: 6px;
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(180deg, #888, #555);
+}
+
+.desk-keyboard-keys {
+  height: 14px;
+  border-radius: 0 0 6px 6px;
+  background: repeating-linear-gradient(
+    90deg,
+    #3a3a3a 0,
+    #3a3a3a 8px,
+    #2a2a2a 8px,
+    #2a2a2a 10px
+  );
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+}
+
+/* ── OS shell inside the CRT ── */
+
+.os-shell {
+  height: 100%;
   background: #008080;
+}
+
+.desktop-icon-label {
+  text-shadow: 1px 1px 0 #000;
+}
+
+.desktop-icon-selected {
+  background: rgba(0, 0, 128, 0.45);
+  outline: 1px dotted #fff;
+}
+
+/* ── Win98 chrome ── */
+
+.win-btn {
+  border: 1px solid #fff;
+  border-right-color: #404040;
+  border-bottom-color: #404040;
+  background: #c0c0c0;
+  box-shadow: inset 1px 1px 0 #dfdfdf;
+}
+
+.win-btn:active {
+  border-color: #404040;
+  border-right-color: #fff;
+  border-bottom-color: #fff;
+  box-shadow: inset 1px 1px 0 #808080;
+}
+
+.win-inset {
+  border: 1px inset #808080;
+}
+
+.win-window {
+  border: 2px solid;
+  border-color: #dfdfdf #404040 #404040 #dfdfdf;
+  background: #c0c0c0;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.35);
+}
+
+.win-titlebar {
+  height: 22px;
+  cursor: default;
+  user-select: none;
+}
+
+.win-titlebar-active {
+  background: linear-gradient(90deg, #000080, #1084d0);
+  color: #fff;
+}
+
+.win-titlebar-inactive {
+  background: linear-gradient(90deg, #808080, #b0b0b0);
+  color: #e0e0e0;
+}
+
+.win-caption-btn {
+  display: flex;
+  width: 18px;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #fff;
+  border-right-color: #404040;
+  border-bottom-color: #404040;
+  background: #c0c0c0;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.win-caption-close {
+  font-weight: bold;
+}
+
+.win-client {
+  border-top: 1px solid #808080;
+}
+
+.taskbar {
+  border-top: 2px solid #dfdfdf;
+  background: #c0c0c0;
+  box-shadow: inset 0 1px 0 #fff;
+}
+
+.start-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 28px;
+  padding: 0 8px;
+  border: 2px solid;
+  border-color: #fff #404040 #404040 #fff;
+  background: #c0c0c0;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.start-btn-pressed,
+.start-btn:active {
+  border-color: #404040 #fff #fff #404040;
+}
+
+.start-flag {
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(135deg, #ff0000 25%, #00ff00 25%, #00ff00 50%, #0000ff 50%, #0000ff 75%, #ffff00 75%);
+}
+
+.start-menu {
+  display: flex;
+  width: 220px;
+  border: 2px solid;
+  border-color: #fff #404040 #404040 #fff;
+  background: #c0c0c0;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.35);
+}
+
+.start-menu-rail {
+  width: 28px;
+  background: linear-gradient(0deg, #000080, #1084d0);
+  display: flex;
+  align-items: flex-end;
+  padding: 6px 4px;
+}
+
+.start-menu-rail-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 10px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.start-menu-rail-text span {
+  font-weight: normal;
+}
+
+.start-menu-list {
+  flex: 1;
+  padding: 4px 0;
+  list-style: none;
+  margin: 0;
+}
+
+.start-menu-item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  text-align: left;
+  font-size: 13px;
+}
+
+.start-menu-item:hover {
+  background: #000080;
+  color: #fff;
+}
+
+.start-menu-divider {
+  margin: 4px 8px;
+  border-top: 1px solid #808080;
+}
+
+.taskbar-window-btn {
+  display: flex;
+  max-width: 8rem;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border: 1px inset #808080;
+  background: #c0c0c0;
+  font-size: 11px;
+}
+
+.taskbar-window-btn-active {
+  border-style: outset;
+  background: #e8e8e8;
+}
+
+.taskbar-clock {
+  min-width: 4.5rem;
+  padding: 2px 6px;
+  border: 1px inset #808080;
+  font-size: 11px;
+}
+
+.taskbar-tray-btn {
+  padding: 2px 6px;
+  border: 1px inset #808080;
+  font-size: 12px;
+}
+
+.context-dismiss {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  cursor: default;
+  background: transparent;
+  border: 0;
+}
+
+.context-menu {
+  position: absolute;
+  z-index: 75;
+  min-width: 160px;
+  list-style: none;
+  margin: 0;
+  padding: 2px;
+  border: 2px solid;
+  border-color: #fff #404040 #404040 #fff;
+  background: #c0c0c0;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.context-menu-item {
+  display: block;
+  width: 100%;
+  padding: 4px 24px;
+  text-align: left;
+  font-size: 12px;
+}
+
+.context-menu-item:hover {
+  background: #000080;
+  color: #fff;
+}
+
+.win-dialog-backdrop {
+  font-family: Tahoma, 'MS Sans Serif', sans-serif;
+}
+
+.win-dialog {
+  border: 2px solid;
+  border-color: #fff #404040 #404040 #fff;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Boot */
+
+.boot-screen {
+  font-family: Tahoma, 'MS Sans Serif', sans-serif;
+}
+
+.boot-dots::after {
+  content: '...';
+  animation: boot-dots 1.2s steps(4, end) infinite;
+}
+
+@keyframes boot-dots {
+  0% {
+    content: '';
+  }
+  25% {
+    content: '.';
+  }
+  50% {
+    content: '..';
+  }
+  75% {
+    content: '...';
+  }
+}
+
+.boot-bar-fill {
+  animation: boot-progress 1.2s ease-in-out forwards;
+}
+
+@keyframes boot-progress {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Screensaver */
+
+.screensaver-float {
+  position: absolute;
+  animation: float-logo 12s linear infinite;
+  opacity: 0.85;
+}
+
+.screensaver-float-2 {
+  animation-delay: -4s;
+  left: 30%;
+}
+
+.screensaver-float-3 {
+  animation-delay: -8s;
+  left: 60%;
+}
+
+@keyframes float-logo {
+  0% {
+    top: 80%;
+    left: 10%;
+  }
+  25% {
+    top: 20%;
+    left: 70%;
+  }
+  50% {
+    top: 60%;
+    left: 20%;
+  }
+  75% {
+    top: 30%;
+    left: 80%;
+  }
+  100% {
+    top: 80%;
+    left: 10%;
+  }
+}
+
+.crt-off {
+  animation: crt-fade 0.8s ease-out;
+}
+
+@keyframes crt-fade {
+  from {
+    background: #fff;
+  }
+  to {
+    background: #000;
+  }
+}
+
+@media (max-width: 640px) {
+  .monitor-screen {
+    aspect-ratio: 3 / 4;
+    max-height: 58vh;
+  }
+
+  .desk-keyboard {
+    display: none;
+  }
 }
