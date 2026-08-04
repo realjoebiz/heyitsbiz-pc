@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { playSound } from '@/lib/sounds';
+import { playWin98Startup } from '@/lib/sounds';
 
 type BootSequenceProps = {
   onDone: () => void;
@@ -13,17 +13,17 @@ export function BootSequence({ onDone }: BootSequenceProps) {
   useEffect(() => {
     const timers = [
       setTimeout(() => setPhase(1), 700),
-      setTimeout(() => setPhase(2), 1800),
       setTimeout(() => {
-        playSound('startup');
-        onDone();
-      }, 3200),
+        setPhase(2);
+        playWin98Startup();
+      }, 1800),
+      setTimeout(() => onDone(), 4800),
     ];
     return () => timers.forEach(clearTimeout);
   }, [onDone]);
 
   const skip = () => {
-    playSound('startup');
+    playWin98Startup();
     onDone();
   };
 
@@ -32,11 +32,16 @@ export function BootSequence({ onDone }: BootSequenceProps) {
       type="button"
       className="boot-screen absolute inset-0 z-[100] flex cursor-pointer flex-col items-center justify-center bg-black font-win text-white"
       onClick={skip}
-      onKeyDown={(e) => e.key === 'Enter' && skip()}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') skip();
+      }}
       aria-label="Skip boot sequence"
     >
       {phase === 0 ? (
-        <p className="text-sm tracking-widest text-[#a0a0a0]">BIZVISION BIOS 4.2</p>
+        <div className="text-center">
+          <p className="text-sm tracking-widest text-[#a0a0a0]">BIZVISION BIOS 4.2</p>
+          <p className="mt-3 text-[10px] text-[#505050]">Copyright (C) 1981-1998, BIZVISION Corp.</p>
+        </div>
       ) : null}
       {phase >= 1 ? (
         <div className="mt-6 text-center">

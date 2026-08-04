@@ -7,6 +7,7 @@ import { ExplorerApp } from '@/components/apps/ExplorerApp';
 import { IframeApp } from '@/components/apps/IframeApp';
 import { MessageApp } from '@/components/apps/MessageApp';
 import { NotepadApp } from '@/components/apps/NotepadApp';
+import { DeskInputProvider, useDeskInput } from '@/components/desk/DeskInputContext';
 import { MonitorSetup } from '@/components/monitor/MonitorSetup';
 import { BootSequence } from '@/components/os/BootSequence';
 import { ContextMenu } from '@/components/os/ContextMenu';
@@ -25,7 +26,7 @@ import {
   saveWallpaper,
   shouldSkipBoot,
 } from '@/lib/storage';
-import { playSound, setMuted } from '@/lib/sounds';
+import { playSound, resetStartupSound, setMuted } from '@/lib/sounds';
 import type { ContextMenuState, WallpaperId, WindowRecord } from '@/lib/types';
 import { WALLPAPERS, nextWallpaper } from '@/lib/wallpapers';
 import { createWindow, focusWindow, openShortcutWindow } from '@/lib/windows';
@@ -40,9 +41,9 @@ function renderWindowBody(
     case 'iframe':
       return win.href ? <IframeApp href={win.href} title={win.title} /> : null;
     case 'notepad':
-      return <NotepadApp />;
+      return <NotepadApp inputId={win.id} />;
     case 'calculator':
-      return <CalculatorApp />;
+      return <CalculatorApp inputId={win.id} />;
     case 'explorer':
       return <ExplorerApp onOpen={onOpenShortcut} />;
     case 'about':
@@ -62,6 +63,15 @@ function renderWindowBody(
 }
 
 export function BizPC() {
+  return (
+    <DeskInputProvider>
+      <BizPCInner />
+    </DeskInputProvider>
+  );
+}
+
+function BizPCInner() {
+  const { setActiveHandler } = useDeskInput();
   const desktopRef = useRef<HTMLDivElement>(null);
   const [booting, setBooting] = useState(() => !shouldSkipBoot());
   const [poweredOff, setPoweredOff] = useState(false);
@@ -75,6 +85,7 @@ export function BizPC() {
   const [wallpaper, setWallpaper] = useState<WallpaperId>('bliss');
   const [muted, setMutedState] = useState(false);
   const [layoutKey, setLayoutKey] = useState(0);
+  const [lampOn, setLampOn] = useState(true);
   const idleRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -99,6 +110,15 @@ export function BizPC() {
       if (idleRef.current) clearTimeout(idleRef.current);
     };
   }, [resetIdle]);
+
+  useEffect(() => {
+    const active = windows.find((w) => w.id === activeWindowId && !w.minimized);
+    if (active && (active.kind === 'notepad' || active.kind === 'calculator')) {
+      setActiveHandler(active.id);
+    } else {
+      setActiveHandler(null);
+    }
+  }, [activeWindowId, windows, setActiveHandler]);
 
   const openShortcut = useCallback((shortcutId: string) => {
     setStartOpen(false);
@@ -143,13 +163,20 @@ export function BizPC() {
   };
 
   const reboot = () => {
+    resetStartupSound();
     setPoweredOff(false);
     setBooting(true);
   };
 
+  const monitorProps = {
+    lampOn,
+    onToggleLamp: () => setLampOn((v) => !v),
+    onDeskActivity: resetIdle,
+  };
+
   if (poweredOff) {
     return (
-      <MonitorSetup>
+      <MonitorSetup {...monitorProps}>
         <button
           type="button"
           className="crt-off absolute inset-0 z-[100] flex flex-col items-center justify-center bg-black font-win text-[#606060]"
@@ -163,7 +190,7 @@ export function BizPC() {
   }
 
   return (
-    <MonitorSetup>
+    <MonitorSetup {...monitorProps}>
       <div className="os-shell relative flex h-full min-h-0 flex-col font-win">
         {booting ? <BootSequence onDone={finishBoot} /> : null}
 

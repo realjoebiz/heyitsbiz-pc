@@ -1,10 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useDeskInput } from '@/components/desk/DeskInputContext';
 
 const KEY = 'bizpc-notepad';
 
-export function NotepadApp() {
+type NotepadAppProps = {
+  inputId: string;
+};
+
+export function NotepadApp({ inputId }: NotepadAppProps) {
+  const { registerHandler, unregisterHandler } = useDeskInput();
   const [text, setText] = useState('Welcome to BIZ-PC.\n\nLeave a note from the open road…');
 
   useEffect(() => {
@@ -15,6 +21,22 @@ export function NotepadApp() {
   useEffect(() => {
     localStorage.setItem(KEY, text);
   }, [text]);
+
+  useEffect(() => {
+    const handler = (key: string) => {
+      if (key === 'Backspace') {
+        setText((t) => t.slice(0, -1));
+        return;
+      }
+      if (key === 'Enter') {
+        setText((t) => `${t}\n`);
+        return;
+      }
+      if (key.length === 1) setText((t) => t + key);
+    };
+    registerHandler(inputId, handler);
+    return () => unregisterHandler(inputId);
+  }, [inputId, registerHandler, unregisterHandler]);
 
   return (
     <textarea
