@@ -114,7 +114,7 @@ export function setMuted(value: boolean) {
 }
 
 export function playSound(
-  kind: 'startup' | 'click' | 'error' | 'minimize' | 'shutdown' | 'key' | 'mouse'
+  kind: 'startup' | 'bios' | 'click' | 'error' | 'minimize' | 'shutdown' | 'key' | 'mouse'
 ) {
   if (muted) return;
   const audio = getCtx();
@@ -124,6 +124,9 @@ export function playSound(
   switch (kind) {
     case 'startup':
       playWin98Startup();
+      break;
+    case 'bios':
+      blip(1046.5, 0.11, 'square', 0.045);
       break;
     case 'click':
       blip(1200, 0.025, 'square', 0.018);

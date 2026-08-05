@@ -254,40 +254,174 @@ body {
 /* Boot */
 
 .boot-screen {
-  font-family: Tahoma, 'MS Sans Serif', sans-serif;
+  overflow: hidden;
+  border: 0;
+  text-align: left;
+  font-family: "Courier New", "Lucida Console", monospace;
 }
 
-.boot-dots::after {
-  content: '...';
-  animation: boot-dots 1.2s steps(4, end) infinite;
+.bios-post,
+.bios-disk-check {
+  position: absolute;
+  inset: 22px 26px;
+  color: #ddd;
+  font-size: 16px;
+  line-height: 1.32;
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.38);
 }
 
-@keyframes boot-dots {
-  0% {
-    content: '';
-  }
-  25% {
-    content: '.';
-  }
-  50% {
-    content: '..';
-  }
-  75% {
-    content: '...';
-  }
+.bios-post p,
+.bios-disk-check p {
+  margin: 0;
 }
 
-.boot-bar-fill {
-  animation: boot-progress 1.2s ease-in-out forwards;
+.bios-energy-star {
+  position: absolute;
+  top: 54px;
+  right: 42px;
+  display: flex;
+  align-items: center;
+  color: #e4de22;
+  font-family: Arial, sans-serif;
+  font-style: italic;
+  transform: rotate(-7deg);
 }
 
-@keyframes boot-progress {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
+.bios-energy-star span {
+  font-size: 74px;
+  line-height: 1;
+  text-shadow: 0 0 5px #d9d300;
+}
+
+.bios-energy-star b {
+  margin-left: -20px;
+  font-size: 23px;
+}
+
+.bios-bottom {
+  position: absolute;
+  bottom: 18px;
+  left: 0;
+}
+
+.bios-disk-check {
+  padding-top: 360px;
+}
+
+.windows-boot {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 48% 34%, #fff 0%, #dcecf8 24%, #84b4dc 62%, #1b4d8b 100%);
+  color: #173765;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+
+.windows-boot::before,
+.windows-boot::after {
+  content: "";
+  position: absolute;
+  width: 440px;
+  height: 140px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.48);
+  filter: blur(24px);
+}
+
+.windows-boot::before {
+  top: 65px;
+  left: -90px;
+}
+
+.windows-boot::after {
+  right: -110px;
+  bottom: 90px;
+}
+
+.windows-flag {
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 60px 60px;
+  grid-template-rows: 48px 48px;
+  gap: 5px;
+  margin-bottom: 18px;
+  transform: skewY(-7deg);
+  filter: drop-shadow(6px 7px 2px rgba(27, 55, 91, 0.22));
+}
+
+.windows-flag i:nth-child(1) { background: #f23b2e; }
+.windows-flag i:nth-child(2) { background: #55a931; }
+.windows-flag i:nth-child(3) { background: #2678cd; }
+.windows-flag i:nth-child(4) { background: #f2c524; }
+
+.windows-wordmark {
+  z-index: 1;
+  margin: 0;
+  color: #172f5a;
+  font-size: 53px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: -3px;
+}
+
+.windows-wordmark small {
+  display: block;
+  margin: 0 0 -8px 30px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-align: left;
+}
+
+.windows-wordmark b {
+  color: #e56a24;
+}
+
+.windows-subtitle {
+  z-index: 1;
+  margin-top: 18px;
+  color: #294d77;
+  font-size: 13px;
+}
+
+.windows-loader {
+  z-index: 1;
+  width: 240px;
+  height: 13px;
+  margin-top: 32px;
+  overflow: hidden;
+  border: 2px inset #c6c6c6;
+  background: #102d71;
+}
+
+.windows-loader span {
+  display: block;
+  width: 70px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, #66a7ff, #fff, #66a7ff, transparent);
+  animation: windows-loader 1.15s linear infinite;
+}
+
+@keyframes windows-loader {
+  from { transform: translateX(-80px); }
+  to { transform: translateX(250px); }
+}
+
+.boot-skip {
+  position: absolute;
+  right: 12px;
+  bottom: 8px;
+  z-index: 3;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.38);
+  font: 10px Tahoma, sans-serif;
 }
 
 /* Screensaver */

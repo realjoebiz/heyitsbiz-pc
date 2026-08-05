@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import './desk-pieter-v2.css';
+import './desk-3d.css';
 
 export const metadata: Metadata = {
   title: 'BIZ-PC — heyitsbiz.com',
