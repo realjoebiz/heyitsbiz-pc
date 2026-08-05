@@ -8,6 +8,7 @@ import { IframeApp } from '@/components/apps/IframeApp';
 import { MessageApp } from '@/components/apps/MessageApp';
 import { NotepadApp } from '@/components/apps/NotepadApp';
 import { DeskInputProvider, useDeskInput } from '@/components/desk/DeskInputContext';
+import { PhysicalKeyboard } from '@/components/desk/PhysicalKeyboard';
 import { MonitorSetup } from '@/components/monitor/MonitorSetup';
 import { BootSequence } from '@/components/os/BootSequence';
 import { ContextMenu } from '@/components/os/ContextMenu';
@@ -120,6 +121,14 @@ function BizPCInner() {
     }
   }, [activeWindowId, windows, setActiveHandler]);
 
+  const activeInputKind = (() => {
+    const active = windows.find((w) => w.id === activeWindowId && !w.minimized);
+    if (active?.kind === 'notepad' || active?.kind === 'calculator') return active.kind;
+    return null;
+  })();
+
+  const keyboardEnabled = !booting && !poweredOff && !screensaver && !shutdownOpen;
+
   const openShortcut = useCallback((shortcutId: string) => {
     setStartOpen(false);
     setContextMenu(null);
@@ -191,6 +200,11 @@ function BizPCInner() {
 
   return (
     <MonitorSetup {...monitorProps}>
+      <PhysicalKeyboard
+        enabled={keyboardEnabled}
+        activeKind={activeInputKind}
+        onActivity={resetIdle}
+      />
       <div className="os-shell relative flex h-full min-h-0 flex-col font-win">
         {booting ? <BootSequence onDone={finishBoot} /> : null}
 

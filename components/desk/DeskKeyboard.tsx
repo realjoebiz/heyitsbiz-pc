@@ -1,111 +1,92 @@
 'use client';
 
 import { useState } from 'react';
+import { KEYBOARD_ROWS, keyIdToOutput, type KeyLabel } from '@/lib/keyboard-layout';
 import { playSound } from '@/lib/sounds';
 import { useDeskInputOptional } from '@/components/desk/DeskInputContext';
-
-const ROWS = [
-  ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '='],
-  ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']'],
-  ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'"],
-  ['Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/'],
-];
 
 type DeskKeyboardProps = {
   onAnyKey?: () => void;
 };
 
+function renderLabel(label: KeyLabel) {
+  if (typeof label === 'string') {
+    return (
+      <div>
+        <span className="kb-single">{label}</span>
+      </div>
+    );
+  }
+  if ('small' in label) {
+    return (
+      <div>
+        <span className="kb-small">{label.small}</span>
+      </div>
+    );
+  }
+  return (
+    <div>
+      <span className="kb-shifted">{label.top}</span>
+      <span className="kb-main">{label.bottom}</span>
+    </div>
+  );
+}
+
 export function DeskKeyboard({ onAnyKey }: DeskKeyboardProps) {
   const deskInput = useDeskInputOptional();
-  const [pressed, setPressed] = useState<string | null>(null);
+  const [localPressed, setLocalPressed] = useState<string | null>(null);
   const [shift, setShift] = useState(false);
+  const pressed = deskInput?.pressedDeskKey ?? localPressed;
 
-  const fire = (raw: string) => {
+  const flash = (id: string) => {
+    deskInput?.flashDeskKey(id);
+    setLocalPressed(id);
+    window.setTimeout(() => setLocalPressed(null), 120);
+  };
+
+  const fire = (id: string) => {
     playSound('key');
     onAnyKey?.();
-    setPressed(raw);
-    window.setTimeout(() => setPressed(null), 120);
+    flash(id);
 
-    let key = raw;
-    if (raw === 'SHIFT') {
+    if (id === 'SHIFT' || id === 'RSHIFT') {
       setShift((s) => !s);
       return;
     }
-    if (raw === 'BKSP') {
-      deskInput?.sendKey('Backspace');
-      return;
-    }
-    if (raw === 'ENTER') {
-      deskInput?.sendKey('Enter');
-      return;
-    }
-    if (raw === 'SPACE') {
-      deskInput?.sendKey(' ');
-      return;
-    }
-    if (shift && key.length === 1) key = key.toUpperCase();
-    else if (!shift && key.length === 1) key = key.toLowerCase();
-    deskInput?.sendKey(key);
+
+    const out = keyIdToOutput(id, shift);
+    if (out) deskInput?.sendKey(out);
   };
 
   return (
-    <div className="desk-keyboard-unit">
-      <div className="desk-keyboard-plate">
-        <p className="desk-keyboard-label">Click keys to type into Notepad or Calculator</p>
-        <div className="desk-keyboard-rows">
-          {ROWS.map((row, ri) => (
-            <div key={ri} className="desk-keyboard-row">
-              {ri === 3 ? (
-                <button
-                  type="button"
-                  className={`desk-key desk-key-wide ${shift ? 'desk-key-pressed' : ''}`}
-                  onClick={() => fire('SHIFT')}
-                >
-                  Shift
-                </button>
-              ) : null}
-              {row.map((k) => (
-                <button
-                  key={k}
-                  type="button"
-                  className={`desk-key ${pressed === k ? 'desk-key-pressed' : ''}`}
-                  onClick={() => fire(k)}
-                >
-                  {k}
-                </button>
-              ))}
-              {ri === 1 ? (
-                <button
-                  type="button"
-                  className={`desk-key desk-key-wide ${pressed === 'BKSP' ? 'desk-key-pressed' : ''}`}
-                  onClick={() => fire('BKSP')}
-                >
-                  Back
-                </button>
-              ) : null}
-              {ri === 2 ? (
-                <button
-                  type="button"
-                  className={`desk-key desk-key-tall ${pressed === 'ENTER' ? 'desk-key-pressed' : ''}`}
-                  onClick={() => fire('ENTER')}
-                >
-                  Enter
-                </button>
-              ) : null}
-            </div>
-          ))}
-          <div className="desk-keyboard-row">
-            <button
-              type="button"
-              className={`desk-key desk-key-space ${pressed === 'SPACE' ? 'desk-key-pressed' : ''}`}
-              onClick={() => fire('SPACE')}
-            >
-              space
-            </button>
+    <div className="keyboard-container">
+      <div className="keyboard" role="group" aria-label="On-screen keyboard">
+        {KEYBOARD_ROWS.map((row, ri) => (
+          <div key={ri} className="keyboard-row">
+            {row.map((key) => (
+              <button
+                key={key.id}
+                type="button"
+                data-code={key.code}
+                className={[
+                  'keyboard-key',
+                  key.mod === 'function' ? 'keyboard-key-fn' : '',
+                  key.mod === 'single' ? 'keyboard-key-single' : '',
+                  key.hideMobile ? 'keyboard-key-hide-mobile' : '',
+                  key.width ? `keyboard-key-${key.width}` : '',
+                  pressed === key.id ? 'keyboard-key-pressed' : '',
+                  (key.id === 'SHIFT' || key.id === 'RSHIFT') && shift ? 'keyboard-key-pressed' : '',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+                onClick={() => fire(key.id)}
+              >
+                {renderLabel(key.label)}
+              </button>
+            ))}
           </div>
-        </div>
+        ))}
       </div>
-      <div className="desk-keyboard-cable" aria-hidden />
     </div>
   );
 }

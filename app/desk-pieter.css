@@ -1,0 +1,541 @@
+/* Pieter.com-inspired desk scene — full viewport, beige keyboard dock */
+
+.pieter-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  background: #dfdfdf;
+  color: #111;
+  user-select: none;
+  transition: background 0.8s ease;
+}
+
+.desk-scene-dark.pieter-stage {
+  background: #343434;
+}
+
+.desk-wall-texture {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, transparent 35%),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 3px,
+      rgba(0, 0, 0, 0.015) 3px,
+      rgba(0, 0, 0, 0.015) 4px
+    );
+  pointer-events: none;
+}
+
+.desk-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.2) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.desk-scene-dark .desk-vignette {
+  background: radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+.desk-toolbar {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+}
+
+.desk-toolbar-btn {
+  padding: 6px 12px;
+  border: 2px solid;
+  border-color: #fff #808080 #808080 #fff;
+  background: #c0c0c0;
+  font-family: Tahoma, 'MS Sans Serif', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #111;
+  cursor: pointer;
+}
+
+.desk-toolbar-btn:active,
+.desk-toolbar-btn-active {
+  border-color: #808080 #fff #fff #808080;
+}
+
+.desk-toolbar-help {
+  width: 100%;
+  max-width: 420px;
+  padding: 10px 12px;
+  border: 2px solid #808080;
+  background: #ffffe1;
+  font-family: Tahoma, 'MS Sans Serif', sans-serif;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #111;
+}
+
+.desk-toolbar-help p {
+  margin: 0 0 6px;
+}
+
+.desk-toolbar-help p:last-child {
+  margin-bottom: 0;
+}
+
+.pieter-workspace {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.pieter-monitor-zone {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding: 0 12px 8px;
+}
+
+.pieter-computer-rig {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.monitor-screen-glow {
+  position: absolute;
+  width: min(68vw, 520px);
+  aspect-ratio: 4 / 3;
+  border-radius: 8px;
+  background: radial-gradient(ellipse at center, rgba(120, 200, 255, 0.22) 0%, transparent 70%);
+  filter: blur(18px);
+  transform: translateY(12px);
+  pointer-events: none;
+}
+
+.desk-scene-dark .monitor-screen-glow {
+  opacity: 0.45;
+}
+
+.monitor-unit {
+  position: relative;
+  width: min(68vw, 520px);
+  filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.35));
+  transition: filter 0.8s ease;
+}
+
+.desk-scene-dark .monitor-unit {
+  filter: brightness(0.45) saturate(0.55) drop-shadow(0 16px 32px rgba(0, 0, 0, 0.5));
+}
+
+.desk-scene-lit .monitor-unit {
+  filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 48px rgba(100, 180, 255, 0.12));
+}
+
+.monitor-bezel {
+  border-radius: 12px 12px 6px 6px;
+  border: 3px solid #4a4a4a;
+  background: linear-gradient(180deg, #c8c8c8 0%, #8a8a8a 40%, #6e6e6e 100%);
+  padding: 10px 10px 8px;
+  box-shadow:
+    inset 0 2px 0 #e8e8e8,
+    inset 0 -3px 0 #505050;
+}
+
+.monitor-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #2a2a2a;
+}
+
+.monitor-led {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3dff6a;
+  box-shadow: 0 0 8px #3dff6a;
+  animation: led-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes led-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.monitor-screen {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  overflow: hidden;
+  border: 3px inset #1a1a1a;
+  border-radius: 4px;
+  background: #000;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.85);
+}
+
+.monitor-scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.06) 2px,
+    rgba(0, 0, 0, 0.06) 4px
+  );
+  pointer-events: none;
+}
+
+.monitor-glass {
+  position: absolute;
+  inset: 0;
+  z-index: 51;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.07) 0%,
+    transparent 40%,
+    transparent 65%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  pointer-events: none;
+}
+
+.monitor-crt-curve {
+  position: absolute;
+  inset: 0;
+  z-index: 52;
+  border-radius: 4px;
+  box-shadow: inset 0 0 70px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+.monitor-chin {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  padding: 0 2px;
+  font-size: 8px;
+  color: #3a3a3a;
+}
+
+.monitor-power {
+  color: #2a6a2a;
+}
+
+.monitor-stand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.monitor-neck {
+  width: 64px;
+  height: 24px;
+  background: linear-gradient(90deg, #5a5a5a, #9a9a9a, #5a5a5a);
+  clip-path: polygon(15% 0, 85% 0, 100% 100%, 0 100%);
+}
+
+.monitor-base {
+  width: 140px;
+  height: 10px;
+  margin-top: -2px;
+  border-radius: 0 0 6px 6px;
+  background: linear-gradient(180deg, #7a7a7a, #4a4a4a);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* ── Input deck (keyboard + mouse) ── */
+
+.pieter-input-deck {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 10px 12px;
+  background: linear-gradient(180deg, transparent 0%, #c4b59a 28%, #b8a88c 100%);
+  transition: filter 0.8s ease;
+}
+
+.desk-scene-dark .pieter-input-deck {
+  filter: brightness(0.32) saturate(0.5);
+}
+
+.keyboard-container {
+  flex: 1;
+  max-width: 900px;
+  min-width: 0;
+}
+
+.keyboard {
+  width: 100%;
+  padding: 6px 4px 8px;
+  background: #cfc8b3;
+  border-radius: 4px;
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.keyboard-row {
+  display: block;
+  width: 100%;
+  line-height: 0;
+  margin-bottom: 2px;
+}
+
+.keyboard-row:last-child {
+  margin-bottom: 0;
+}
+
+.keyboard-key {
+  font-family: system-ui, Tahoma, 'MS Sans Serif', sans-serif;
+  display: inline-block;
+  vertical-align: top;
+  height: 32px;
+  width: calc(100% / 20);
+  margin: 0;
+  padding: 0;
+  background-color: #d9d0c5;
+  color: #000;
+  text-align: center;
+  position: relative;
+  border: 5px solid #f3eee9;
+  border-right-color: #b1a392;
+  border-bottom-color: #8d8073;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  overflow: hidden;
+}
+
+.keyboard-key-fn {
+  background-color: #aa9d90;
+  border-color: #ccc5bc;
+  border-right-color: #786e61;
+  border-bottom-color: #6a5f53;
+}
+
+.keyboard-key div {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  border-radius: 3px;
+  line-height: 1.1;
+}
+
+.keyboard-key-single div {
+  bottom: 8px;
+}
+
+.keyboard-key .kb-small {
+  font-size: 7px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.keyboard-key .kb-single {
+  font-size: 13px;
+  display: block;
+}
+
+.keyboard-key .kb-shifted {
+  font-size: 7px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.keyboard-key .kb-main {
+  font-size: 13px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.keyboard-key:active,
+.keyboard-key-pressed {
+  background-color: #b0a394;
+  border-left-color: #8a8a8a;
+  border-top-color: #8a8a8a;
+  border-right-color: #bbb;
+  border-bottom-color: #bbb;
+}
+
+.keyboard-key-esc {
+  width: calc(100% / 15.7);
+}
+
+.keyboard-key-tab {
+  width: calc(100% / 11);
+}
+
+.keyboard-key-caps {
+  width: calc(100% / 8.7);
+}
+
+.keyboard-key-shift {
+  width: calc(100% / 7.9);
+}
+
+.keyboard-key-rshift {
+  width: calc(100% / 11.8);
+}
+
+.keyboard-key-backspace {
+  width: calc(100% / 6.3);
+}
+
+.keyboard-key-enter {
+  width: calc(100% / 6.35);
+}
+
+.keyboard-key-ctrl {
+  width: calc(100% / 12);
+}
+
+.keyboard-key-alt {
+  width: calc(100% / 12);
+}
+
+.keyboard-key-space {
+  width: calc(100% / 2.05);
+}
+
+.keyboard-key-delete {
+  width: calc(100% / 15);
+}
+
+/* ── Mouse + mat ── */
+
+.desk-mouse-pad {
+  position: relative;
+  flex-shrink: 0;
+  width: 120px;
+  height: 140px;
+  margin-bottom: 4px;
+}
+
+.desk-mousemat {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  background:
+    radial-gradient(circle at 30% 20%, #ff6b9d 0%, transparent 35%),
+    radial-gradient(circle at 70% 80%, #4ecdc4 0%, transparent 40%),
+    linear-gradient(135deg, #2d1b69, #11998e);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.desk-mousemat-art {
+  font-family: Impact, Haettenschweiler, sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+  transform: rotate(-8deg);
+}
+
+.desk-mouse-unit {
+  position: absolute;
+  left: 50%;
+  top: 28px;
+  width: 58px;
+  height: 88px;
+  border: 0;
+  background: transparent;
+  transform: translateX(-50%);
+  cursor: pointer;
+  padding: 0;
+}
+
+.desk-mouse-top {
+  position: absolute;
+  inset: 0 6px auto 6px;
+  height: 52px;
+  border-radius: 28px 28px 8px 8px;
+  background: linear-gradient(180deg, #ececec, #a8a8a8);
+  border: 2px solid #707070;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.desk-mouse-buttons {
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  gap: 2px;
+  height: 22px;
+}
+
+.desk-mouse-btn {
+  flex: 1;
+  border-radius: 12px 12px 0 0;
+  background: linear-gradient(180deg, #f4f4f4, #c8c8c8);
+  border: 1px solid #888;
+}
+
+.desk-mouse-ball {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #888, #222);
+}
+
+@media (max-width: 900px) {
+  .desk-mouse-pad {
+    display: none;
+  }
+
+  .keyboard-key-hide-mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .pieter-monitor-zone {
+    padding-bottom: 4px;
+  }
+
+  .monitor-unit {
+    width: min(92vw, 420px);
+  }
+
+  .keyboard-key {
+    height: 28px;
+    border-width: 4px;
+  }
+}

@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useMemo, useRef } from 'react';
+import { createContext, useCallback, useContext, useMemo, useRef, useState } from 'react';
 
 type KeyHandler = (key: string) => void;
 
@@ -9,6 +9,8 @@ type DeskInputContextValue = {
   unregisterHandler: (id: string) => void;
   setActiveHandler: (id: string | null) => void;
   sendKey: (key: string) => void;
+  pressedDeskKey: string | null;
+  flashDeskKey: (keyId: string) => void;
 };
 
 const DeskInputContext = createContext<DeskInputContextValue | null>(null);
@@ -16,6 +18,8 @@ const DeskInputContext = createContext<DeskInputContextValue | null>(null);
 export function DeskInputProvider({ children }: { children: React.ReactNode }) {
   const handlersRef = useRef(new Map<string, KeyHandler>());
   const activeIdRef = useRef<string | null>(null);
+  const flashTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [pressedDeskKey, setPressedDeskKey] = useState<string | null>(null);
 
   const registerHandler = useCallback((id: string, handler: KeyHandler) => {
     handlersRef.current.set(id, handler);
@@ -36,9 +40,22 @@ export function DeskInputProvider({ children }: { children: React.ReactNode }) {
     handlersRef.current.get(id)?.(key);
   }, []);
 
+  const flashDeskKey = useCallback((keyId: string) => {
+    if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
+    setPressedDeskKey(keyId);
+    flashTimerRef.current = setTimeout(() => setPressedDeskKey(null), 120);
+  }, []);
+
   const value = useMemo(
-    () => ({ registerHandler, unregisterHandler, setActiveHandler, sendKey }),
-    [registerHandler, unregisterHandler, setActiveHandler, sendKey]
+    () => ({
+      registerHandler,
+      unregisterHandler,
+      setActiveHandler,
+      sendKey,
+      pressedDeskKey,
+      flashDeskKey,
+    }),
+    [registerHandler, unregisterHandler, setActiveHandler, sendKey, pressedDeskKey, flashDeskKey]
   );
 
   return <DeskInputContext.Provider value={value}>{children}</DeskInputContext.Provider>;
