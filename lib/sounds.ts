@@ -14,6 +14,27 @@ function getCtx(): AudioContext | null {
   return ctx;
 }
 
+/**
+ * Browsers block Web Audio until it is resumed inside a real user gesture.
+ * Call this directly from the power button before starting the boot timer.
+ */
+export async function unlockAudio(): Promise<boolean> {
+  const audio = getCtx();
+  if (!audio || muted) return false;
+
+  try {
+    await audio.resume();
+    const buffer = audio.createBuffer(1, 1, audio.sampleRate);
+    const source = audio.createBufferSource();
+    source.buffer = buffer;
+    source.connect(audio.destination);
+    source.start();
+    return audio.state === 'running';
+  } catch {
+    return false;
+  }
+}
+
 function scheduleNote(
   freq: number,
   startAt: number,

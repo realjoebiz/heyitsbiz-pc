@@ -25,9 +25,8 @@ import {
   saveIconPositions,
   saveMuted,
   saveWallpaper,
-  shouldSkipBoot,
 } from '@/lib/storage';
-import { playSound, resetStartupSound, setMuted } from '@/lib/sounds';
+import { playSound, resetStartupSound, setMuted, unlockAudio } from '@/lib/sounds';
 import type { ContextMenuState, WallpaperId, WindowRecord } from '@/lib/types';
 import { WALLPAPERS, nextWallpaper } from '@/lib/wallpapers';
 import { createWindow, focusWindow, openShortcutWindow } from '@/lib/windows';
@@ -74,7 +73,8 @@ export function BizPC() {
 function BizPCInner() {
   const { setActiveHandler } = useDeskInput();
   const desktopRef = useRef<HTMLDivElement>(null);
-  const [booting, setBooting] = useState(() => !shouldSkipBoot());
+  const [started, setStarted] = useState(false);
+  const [booting, setBooting] = useState(true);
   const [poweredOff, setPoweredOff] = useState(false);
   const [screensaver, setScreensaver] = useState(false);
   const [windows, setWindows] = useState<WindowRecord[]>([]);
@@ -182,6 +182,25 @@ function BizPCInner() {
     onToggleLamp: () => setLampOn((v) => !v),
     onDeskActivity: resetIdle,
   };
+
+  if (!started) {
+    return (
+      <MonitorSetup {...monitorProps}>
+        <button
+          type="button"
+          className="pc-power-gate"
+          onClick={async () => {
+            resetStartupSound();
+            await unlockAudio();
+            setStarted(true);
+          }}
+        >
+          <span>POWER ON BIZ-PC</span>
+          <small>CLICK TO START WITH SOUND</small>
+        </button>
+      </MonitorSetup>
+    );
+  }
 
   if (poweredOff) {
     return (

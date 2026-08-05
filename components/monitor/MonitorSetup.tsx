@@ -28,9 +28,12 @@ export function MonitorSetup({ children, lampOn, onToggleLamp, onDeskActivity }:
             <div className="monitor-screen-glow" aria-hidden />
             <div className="monitor-unit">
               <div className="monitor-bezel">
+                <div className="monitor-top-depth" aria-hidden />
+                <div className="monitor-left-depth" aria-hidden />
+                <div className="monitor-right-depth" aria-hidden />
                 <div className="monitor-brand">
-                  <span className="monitor-led" aria-hidden />
                   <span>BIZVISION</span>
+                  <small>Multiscan 98</small>
                 </div>
 
                 <div className="monitor-screen">
@@ -41,8 +44,9 @@ export function MonitorSetup({ children, lampOn, onToggleLamp, onDeskActivity }:
                 </div>
 
                 <div className="monitor-chin">
-                  <span className="monitor-power">● PWR</span>
-                  <span className="monitor-model">Model 580 CRT</span>
+                  <span className="monitor-model">DIGITAL COLOR DISPLAY</span>
+                  <span className="monitor-controls" aria-hidden>● ◉ ◉</span>
+                  <span className="monitor-power"><i className="monitor-led" /> PWR</span>
                 </div>
               </div>
 
@@ -54,6 +58,8 @@ export function MonitorSetup({ children, lampOn, onToggleLamp, onDeskActivity }:
           </div>
         </div>
 
+        <div className="desk-horizon" aria-hidden />
+        <div className="desk-surface" aria-hidden />
         <div className="pieter-input-deck">
           <DeskKeyboard onAnyKey={onDeskActivity} />
           <DeskMouse />
