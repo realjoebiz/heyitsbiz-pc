@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AboutApp } from '@/components/apps/AboutApp';
-import { BlockBurstApp } from '@/components/apps/BlockBurstApp';
 import { CalculatorApp } from '@/components/apps/CalculatorApp';
 import { ExplorerApp } from '@/components/apps/ExplorerApp';
 import { IframeApp } from '@/components/apps/IframeApp';
@@ -46,8 +45,6 @@ function renderWindowBody(
       return <NotepadApp inputId={win.id} />;
     case 'calculator':
       return <CalculatorApp inputId={win.id} />;
-    case 'game':
-      return <BlockBurstApp />;
     case 'explorer':
       return <ExplorerApp onOpen={onOpenShortcut} />;
     case 'about':
