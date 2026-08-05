@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { DeskKeyboard } from '@/components/desk/DeskKeyboard';
+import { DeskMouse } from '@/components/desk/DeskMouse';
 import { DeskToolbar } from '@/components/desk/DeskToolbar';
 import { playSound } from '@/lib/sounds';
 
@@ -100,18 +101,11 @@ export function MonitorSetup({
             setTimeout(() => setPrinting(false), 1600);
           }}
         />
-        <button
-          type="button"
-          className="room-hotspot hotspot-mouse"
-          aria-label="Click desk mouse"
-          title="Mouse"
-          onClick={() => {
-            playSound('mouse');
-            showNotice('Click!');
-          }}
-        />
         <div className="photo-keyboard">
           <DeskKeyboard onAnyKey={onDeskActivity} />
+        </div>
+        <div className="photo-mouse">
+          <DeskMouse />
         </div>
 
         <section

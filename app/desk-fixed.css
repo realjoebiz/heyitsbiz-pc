@@ -37,7 +37,7 @@
 
 .fixed-crt-screen {
   position: absolute;
-  top: 14.5%;
+  top: 12.8%;
   left: 32.1%;
   width: 35%;
   height: 39.15%;
@@ -91,6 +91,11 @@
 
 .biz-room-dark .room-lighting {
   background: rgba(2, 4, 7, 0.68);
+}
+
+.biz-room-dark .photo-keyboard,
+.biz-room-dark .photo-mouse {
+  filter: brightness(0.32) saturate(0.62);
 }
 
 .room-hotspot {
@@ -182,22 +187,14 @@
   }
 }
 
-.hotspot-mouse {
-  top: 77%;
-  left: 80%;
-  width: 15%;
-  height: 16%;
-  border-radius: 50%;
-}
-
 .photo-keyboard {
   position: absolute;
-  top: 71.4%;
-  left: 18.5%;
+  top: 65.5%;
+  left: 18%;
   z-index: 9;
-  width: 61.8%;
-  height: 20%;
-  transform: perspective(700px) rotateX(2deg);
+  width: 61%;
+  height: 27%;
+  perspective: 850px;
   transform-origin: top center;
 }
 
@@ -209,7 +206,16 @@
 
 .photo-keyboard .keyboard {
   box-sizing: border-box;
-  padding: 1.5% 3.5% 3%;
+  padding: 2.3% 2.4% 4%;
+  border: 1px solid #8c806f;
+  border-bottom: clamp(9px, 1.3vw, 22px) solid #6f6252;
+  border-radius: 5px;
+  background: linear-gradient(145deg, #d6ccba, #aea18d);
+  box-shadow:
+    0 clamp(7px, 1.2vw, 18px) clamp(10px, 1.7vw, 28px) rgba(0, 0, 0, 0.5),
+    inset 0 2px 2px rgba(255, 255, 255, 0.5);
+  transform: rotateX(23deg);
+  transform-origin: top center;
 }
 
 .photo-keyboard .keyboard-row {
@@ -225,32 +231,69 @@
   display: inline-block;
   box-sizing: border-box;
   width: calc(100% / 20);
-  height: 92%;
-  margin: 0;
+  height: 88%;
+  margin: 0 0.5px;
   padding: 0;
   overflow: hidden;
-  border: 1px solid transparent;
-  border-radius: 3px;
-  background: transparent;
-  color: transparent;
+  border: clamp(1px, 0.22vw, 4px) solid #f1ece3;
+  border-right-color: #a99b89;
+  border-bottom: clamp(4px, 0.62vw, 10px) solid #837565;
+  border-radius: clamp(2px, 0.3vw, 5px);
+  background: #d8d0c4;
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.32);
+  color: #1c1915;
+  font-family: system-ui, Tahoma, sans-serif;
+  font-weight: 600;
   vertical-align: top;
   cursor: pointer;
+  transition:
+    border-bottom-width 70ms ease,
+    transform 70ms ease,
+    background 70ms ease;
+}
+
+.photo-keyboard .keyboard-key-fn {
+  border-color: #c7beb2;
+  border-right-color: #776c5e;
+  border-bottom-color: #62574b;
+  background: #999083;
+}
+
+.photo-keyboard .keyboard-key div {
+  position: absolute;
+  right: 0;
+  bottom: 8%;
+  left: 0;
+  line-height: 0.9;
+  text-align: center;
+}
+
+.photo-keyboard .keyboard-key .kb-single,
+.photo-keyboard .keyboard-key .kb-main {
+  display: block;
+  font-size: clamp(5px, 0.58vw, 11px);
+}
+
+.photo-keyboard .keyboard-key .kb-small,
+.photo-keyboard .keyboard-key .kb-shifted {
+  display: block;
+  font-size: clamp(4px, 0.4vw, 8px);
 }
 
 .photo-keyboard .keyboard-key:hover {
-  border-color: rgba(126, 235, 255, 0.78);
-  background: rgba(96, 219, 255, 0.2);
-  box-shadow: 0 0 7px rgba(83, 221, 255, 0.54);
+  border-bottom-width: clamp(2px, 0.35vw, 6px);
+  background: #e8e0d4;
 }
 
 .photo-keyboard .keyboard-key:active,
 .photo-keyboard .keyboard-key-pressed {
-  border-color: rgba(119, 255, 190, 0.95);
-  background: rgba(60, 255, 148, 0.38);
+  border-width: 1px;
+  border-color: #786d60;
+  background: #b4a795;
   box-shadow:
-    inset 0 2px 3px rgba(0, 0, 0, 0.38),
-    0 0 9px rgba(54, 255, 147, 0.75);
-  transform: translateY(2px);
+    inset 0 3px 5px rgba(0, 0, 0, 0.42),
+    0 0 7px rgba(110, 244, 198, 0.5);
+  transform: translateY(clamp(2px, 0.45vw, 7px));
 }
 
 .photo-keyboard .keyboard-key-esc { width: calc(100% / 15.7); }
@@ -264,6 +307,104 @@
 .photo-keyboard .keyboard-key-alt { width: calc(100% / 12); }
 .photo-keyboard .keyboard-key-space { width: calc(100% / 2.05); }
 .photo-keyboard .keyboard-key-delete { width: calc(100% / 15); }
+
+.photo-mouse {
+  position: absolute;
+  top: 69%;
+  left: 80%;
+  z-index: 9;
+  width: 15%;
+  height: 22%;
+  perspective: 700px;
+}
+
+.photo-mouse .desk-mouse-pad {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform: rotateX(20deg) rotateZ(3deg);
+  transform-origin: top center;
+}
+
+.photo-mouse .desk-mousemat {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 7px;
+  background:
+    radial-gradient(circle at 24% 23%, #ff5b8d 0 12%, transparent 13%),
+    radial-gradient(circle at 72% 69%, #2fdbc9 0 18%, transparent 19%),
+    repeating-linear-gradient(135deg, transparent 0 12px, rgba(255,255,255,0.1) 13px 14px),
+    linear-gradient(135deg, #24134f, #127d77);
+  box-shadow: 0 9px 16px rgba(0, 0, 0, 0.42);
+}
+
+.photo-mouse .desk-mousemat-art {
+  color: rgba(255, 255, 255, 0.88);
+  font: clamp(10px, 1.5vw, 25px) Impact, sans-serif;
+  letter-spacing: 0.08em;
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.4);
+  transform: rotate(-9deg);
+}
+
+.photo-mouse .desk-mouse-unit {
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  width: 42%;
+  height: 65%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+
+.photo-mouse .desk-mouse-top {
+  position: absolute;
+  inset: 0;
+  border: 1px solid #756f64;
+  border-radius: 48% 48% 28% 28% / 58% 58% 25% 25%;
+  background: linear-gradient(120deg, #eee9df, #aaa294 72%);
+  box-shadow:
+    inset 4px 3px rgba(255, 255, 255, 0.5),
+    0 7px 9px rgba(0, 0, 0, 0.42);
+}
+
+.photo-mouse .desk-mouse-buttons {
+  position: absolute;
+  top: 4%;
+  right: 7%;
+  left: 7%;
+  display: flex;
+  gap: 2px;
+  height: 35%;
+}
+
+.photo-mouse .desk-mouse-btn {
+  flex: 1;
+  border: 1px solid #938c80;
+  border-radius: 18px 18px 2px 2px;
+  background: linear-gradient(#f8f4ec, #c0b8aa);
+}
+
+.photo-mouse .desk-mouse-unit:active {
+  transform: translateX(-50%) translateY(3px);
+}
+
+.photo-mouse .desk-mouse-ball {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  width: 18%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #777, #181818);
+  transform: translateX(-50%);
+}
 
 .room-notice {
   position: absolute;

@@ -4,7 +4,7 @@ import { playSound } from '@/lib/sounds';
 
 export function DeskMouse() {
   return (
-    <div className="desk-mouse-pad" aria-hidden>
+    <div className="desk-mouse-pad">
       <div className="desk-mousemat">
         <span className="desk-mousemat-art">BIZ</span>
       </div>
