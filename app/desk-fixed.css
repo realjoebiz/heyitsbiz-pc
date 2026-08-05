@@ -30,6 +30,7 @@
 .room-art {
   position: absolute;
   inset: 0;
+  z-index: 1;
   background: url("/biz-pc-room.png") center / 100% 100% no-repeat;
   pointer-events: none;
 }
@@ -40,6 +41,7 @@
   left: 32.1%;
   width: 35%;
   height: 39.15%;
+  z-index: 8;
   overflow: hidden;
   border-radius: 1.2% / 1.7%;
   background: #000;
@@ -81,7 +83,7 @@
 .room-lighting {
   position: absolute;
   inset: 0;
-  z-index: 30;
+  z-index: 2;
   pointer-events: none;
   background: rgba(2, 4, 5, 0);
   transition: background 0.6s ease;
@@ -91,8 +93,194 @@
   background: rgba(2, 4, 7, 0.68);
 }
 
-.biz-room-dark .fixed-crt-screen {
-  filter: brightness(0.9) saturate(0.86);
+.room-hotspot {
+  position: absolute;
+  z-index: 7;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    border-color 120ms ease,
+    background 120ms ease,
+    box-shadow 120ms ease,
+    transform 90ms ease;
+}
+
+.room-hotspot:hover,
+.room-hotspot:focus-visible {
+  border-color: rgba(132, 240, 255, 0.7);
+  background: rgba(94, 225, 255, 0.08);
+  box-shadow:
+    0 0 0 2px rgba(20, 30, 33, 0.25),
+    0 0 16px rgba(92, 225, 255, 0.45);
+  outline: none;
+}
+
+.room-hotspot:active {
+  transform: translateY(2px);
+}
+
+.hotspot-lamp {
+  top: 19%;
+  left: 10.5%;
+  width: 18%;
+  height: 47%;
+}
+
+.hotspot-switch {
+  top: 32%;
+  left: 84.5%;
+  width: 7.5%;
+  height: 15%;
+}
+
+.hotspot-tower {
+  top: 61%;
+  left: 5.5%;
+  width: 5%;
+  height: 10%;
+  border-radius: 50%;
+}
+
+.hotspot-printer {
+  top: 38%;
+  left: 79.5%;
+  width: 20%;
+  height: 40%;
+}
+
+.hotspot-printer::after {
+  content: "";
+  position: absolute;
+  top: 7%;
+  left: 28%;
+  width: 48%;
+  height: 36%;
+  opacity: 0;
+  background: rgba(255, 253, 232, 0.76);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(28%);
+}
+
+.hotspot-printing::after {
+  animation: printer-paper 1.5s ease-out;
+}
+
+@keyframes printer-paper {
+  0% {
+    opacity: 0;
+    transform: translateY(42%);
+  }
+  25% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-82%);
+  }
+}
+
+.hotspot-mouse {
+  top: 77%;
+  left: 80%;
+  width: 15%;
+  height: 16%;
+  border-radius: 50%;
+}
+
+.photo-keyboard {
+  position: absolute;
+  top: 71.4%;
+  left: 18.5%;
+  z-index: 9;
+  width: 61.8%;
+  height: 20%;
+  transform: perspective(700px) rotateX(2deg);
+  transform-origin: top center;
+}
+
+.photo-keyboard .keyboard-container,
+.photo-keyboard .keyboard {
+  width: 100%;
+  height: 100%;
+}
+
+.photo-keyboard .keyboard {
+  box-sizing: border-box;
+  padding: 1.5% 3.5% 3%;
+}
+
+.photo-keyboard .keyboard-row {
+  display: block;
+  width: 100%;
+  height: 20%;
+  white-space: nowrap;
+  line-height: 0;
+}
+
+.photo-keyboard .keyboard-key {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  width: calc(100% / 20);
+  height: 92%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: transparent;
+  vertical-align: top;
+  cursor: pointer;
+}
+
+.photo-keyboard .keyboard-key:hover {
+  border-color: rgba(126, 235, 255, 0.78);
+  background: rgba(96, 219, 255, 0.2);
+  box-shadow: 0 0 7px rgba(83, 221, 255, 0.54);
+}
+
+.photo-keyboard .keyboard-key:active,
+.photo-keyboard .keyboard-key-pressed {
+  border-color: rgba(119, 255, 190, 0.95);
+  background: rgba(60, 255, 148, 0.38);
+  box-shadow:
+    inset 0 2px 3px rgba(0, 0, 0, 0.38),
+    0 0 9px rgba(54, 255, 147, 0.75);
+  transform: translateY(2px);
+}
+
+.photo-keyboard .keyboard-key-esc { width: calc(100% / 15.7); }
+.photo-keyboard .keyboard-key-tab { width: calc(100% / 11); }
+.photo-keyboard .keyboard-key-caps { width: calc(100% / 8.7); }
+.photo-keyboard .keyboard-key-shift { width: calc(100% / 7.9); }
+.photo-keyboard .keyboard-key-rshift { width: calc(100% / 11.8); }
+.photo-keyboard .keyboard-key-backspace { width: calc(100% / 6.3); }
+.photo-keyboard .keyboard-key-enter { width: calc(100% / 6.35); }
+.photo-keyboard .keyboard-key-ctrl,
+.photo-keyboard .keyboard-key-alt { width: calc(100% / 12); }
+.photo-keyboard .keyboard-key-space { width: calc(100% / 2.05); }
+.photo-keyboard .keyboard-key-delete { width: calc(100% / 15); }
+
+.room-notice {
+  position: absolute;
+  bottom: 4%;
+  left: 50%;
+  z-index: 20;
+  max-width: 70%;
+  padding: 7px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 3px;
+  background: rgba(14, 15, 13, 0.88);
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.38);
+  color: #e8e1c9;
+  font: 12px "Courier New", monospace;
+  text-align: center;
+  transform: translateX(-50%);
+  pointer-events: none;
 }
 
 .biz-room-vignette {
