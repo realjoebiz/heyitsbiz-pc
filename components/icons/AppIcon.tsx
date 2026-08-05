@@ -52,6 +52,15 @@ export function AppIcon({ id, size = 32 }: AppIconProps) {
           <rect x="19" y="13" width="4" height="3" fill="#dfdfdf" stroke="#808080" />
         </svg>
       );
+    case 'blocks':
+      return (
+        <svg {...common} aria-hidden>
+          <rect x="6" y="6" width="8" height="8" fill="#e53935" stroke="#000" />
+          <rect x="16" y="6" width="8" height="8" fill="#43a047" stroke="#000" />
+          <rect x="6" y="16" width="8" height="8" fill="#1e88e5" stroke="#000" />
+          <rect x="16" y="16" width="8" height="8" fill="#fdd835" stroke="#000" />
+        </svg>
+      );
     case 'chat':
       return (
         <svg {...common} aria-hidden>

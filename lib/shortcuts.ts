@@ -49,6 +49,15 @@ export const SHORTCUTS: Shortcut[] = [
     defaultSize: { w: 240, h: 320 },
   },
   {
+    id: 'blocks',
+    label: 'Color Blocks',
+    iconId: 'blocks',
+    kind: 'game',
+    blurb: 'Clear the 12×20 grid — match adjacent colours.',
+    status: 'live',
+    defaultSize: { w: 340, h: 520 },
+  },
+  {
     id: 'irc',
     label: 'IRC Wire',
     iconId: 'chat',
@@ -107,6 +116,7 @@ export const DEFAULT_ICON_LAYOUT: Record<string, { x: number; y: number }> = {
   hub: { x: 16, y: 192 },
   notepad: { x: 16, y: 280 },
   calculator: { x: 16, y: 368 },
+  blocks: { x: 16, y: 456 },
   irc: { x: 112, y: 16 },
   geo: { x: 112, y: 104 },
   tv: { x: 112, y: 192 },

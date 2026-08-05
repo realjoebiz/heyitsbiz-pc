@@ -1,4 +1,4 @@
-export type AppKind = 'iframe' | 'notepad' | 'calculator' | 'explorer' | 'about' | 'message';
+export type AppKind = 'iframe' | 'notepad' | 'calculator' | 'explorer' | 'about' | 'message' | 'game';
 
 export type ShortcutStatus = 'live' | 'soon' | 'system';
 
