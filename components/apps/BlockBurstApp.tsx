@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   COLS,
   ROWS,
@@ -17,12 +17,22 @@ const COLOR_CLASS: Record<BlockColor, string> = {
   red: 'bb-red',
   green: 'bb-green',
   blue: 'bb-blue',
-  yellow: 'bb-yellow',
 };
 
 export function BlockBurstApp() {
   const [game, setGame] = useState<GameState>(() => newGame());
   const [hover, setHover] = useState<{ row: number; col: number } | null>(null);
+  const gameRef = useRef(game);
+  const lastSoundMove = useRef(0);
+  gameRef.current = game;
+
+  useEffect(() => {
+    if (game.moves > lastSoundMove.current) {
+      playSound('click');
+      if (game.status === 'won') playSound('win');
+      lastSoundMove.current = game.moves;
+    }
+  }, [game.moves, game.status]);
 
   const hoverKeys = useMemo(() => {
     if (!hover || game.status !== 'playing' || !isValidClick(game.grid, hover.row, hover.col)) {
@@ -31,21 +41,24 @@ export function BlockBurstApp() {
     return new Set(getGroup(game.grid, hover.row, hover.col).map(({ row, col }) => `${row},${col}`));
   }, [hover, game]);
 
-  const onCellClick = useCallback(
-    (row: number, col: number) => {
-      if (!isValidClick(game.grid, row, col)) {
-        playSound('error');
-        return;
-      }
-      playSound('click');
-      setGame((g) => clickCell(g, row, col));
-    },
-    [game.grid]
-  );
+  const onCellClick = useCallback((row: number, col: number) => {
+    const current = gameRef.current;
+    if (current.status !== 'playing' || !isValidClick(current.grid, row, col)) {
+      playSound('error');
+      return;
+    }
+    const next = clickCell(current, row, col);
+    gameRef.current = next;
+    setGame(next);
+    setHover(null);
+  }, []);
 
   const restart = () => {
     playSound('click');
-    setGame(newGame());
+    lastSoundMove.current = 0;
+    const next = newGame();
+    gameRef.current = next;
+    setGame(next);
     setHover(null);
   };
 
@@ -56,7 +69,7 @@ export function BlockBurstApp() {
           Score: <strong>{game.score}</strong> · Moves: {game.moves}
         </span>
         <span className="text-[#a0a0c0]">
-          {COLS}×{ROWS} · tap groups of 2+
+          {COLS}×{ROWS} · 3 colours · tap groups of 2+
         </span>
         <button type="button" className="win-btn px-2 py-0.5 text-xs" onClick={restart}>
           New game
@@ -85,7 +98,7 @@ export function BlockBurstApp() {
           {game.grid.map((row, r) =>
             row.map((cell, c) => {
               const key = `${r},${c}`;
-              const valid = cell !== null && isValidClick(game.grid, r, c);
+              const valid = cell !== null && game.status === 'playing' && isValidClick(game.grid, r, c);
               const inHover = hoverKeys.has(key);
               return (
                 <button
