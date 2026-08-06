@@ -114,7 +114,7 @@ export function setMuted(value: boolean) {
 }
 
 export function playSound(
-  kind: 'startup' | 'bios' | 'click' | 'error' | 'minimize' | 'shutdown' | 'key' | 'mouse'
+  kind: 'startup' | 'bios' | 'click' | 'error' | 'minimize' | 'shutdown' | 'key' | 'mouse' | 'win'
 ) {
   if (muted) return;
   const audio = getCtx();
@@ -147,6 +147,11 @@ export function playSound(
     case 'shutdown':
       blip(392, 0.12);
       setTimeout(() => blip(294, 0.2), 120);
+      break;
+    case 'win':
+      blip(523, 0.08);
+      setTimeout(() => blip(659, 0.1), 90);
+      setTimeout(() => blip(784, 0.14), 190);
       break;
   }
 }
