@@ -76,11 +76,11 @@ export const SHORTCUTS: Shortcut[] = [
   },
   {
     id: 'tv',
-    label: 'Retro TV',
+    label: 'Bizflix',
     iconId: 'tv',
     kind: 'iframe',
     href: 'https://tv.heyitsbiz.com',
-    blurb: 'BIZVISION CRT — curated vintage channels.',
+    blurb: 'Bizflix CRT — curated vintage channels.',
     status: 'live',
     defaultSize: { w: 720, h: 560 },
   },
